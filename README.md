@@ -25,10 +25,10 @@ arrays and key-value maps), and a large standard library.
 ## Features
 
 This container provides a plain Go 1.5/1.6 installation built from official
-golang release packages.
+release packages.
 
-Both Go containers include the following version control systems to make `go get`
-happy:
+Both Go containers include the following version control systems to make
+`go get` happy:
 
 * bzr
 * git
@@ -36,8 +36,8 @@ happy:
 
 ## Usage
 
-This container is intended to be used as build image in Drone, as shown in the
-following example (using a build matrix):
+This container can be used as build image in Drone, as shown in the following
+example (using a build matrix):
 
 ```yaml
 build:
