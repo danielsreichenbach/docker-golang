@@ -14,12 +14,15 @@ RUN set -ex \
 	&& rm -rf /var/cache/apk/*
 
 RUN set -ex \
-	&& buildDeps='bash gcc musl-dev' \
-	&& apk add --update $buildDeps \
-	&& rm -rf /var/cache/apk/* \
+	&& apk add --no-cache --virtual .build-deps \
+		bash \
+		curl \
+		gcc \
+		musl-dev \
+		openssl \
 	\
 	&& mkdir -p /usr/local/bootstrap \
-	&& wget -q "$GOLANG_BOOTSTRAP_URL" -O golang.tar.gz \
+	&& curl -sSL "$GOLANG_BOOTSTRAP_URL" -o golang.tar.gz \
 	&& echo "$GOLANG_BOOTSTRAP_SHA1  golang.tar.gz" | sha1sum -c - \
 	&& tar -C /usr/local/bootstrap -xzf golang.tar.gz \
 	&& rm golang.tar.gz \
@@ -27,7 +30,7 @@ RUN set -ex \
 	&& ./make.bash \
 	&& export GOROOT_BOOTSTRAP=/usr/local/bootstrap/go \
 	\
-	&& wget -q "$GOLANG_SRC_URL" -O golang.tar.gz \
+	&& curl -sSL "$GOLANG_SRC_URL" -o golang.tar.gz \
 	&& echo "$GOLANG_SRC_SHA256  golang.tar.gz" | sha256sum -c - \
 	&& tar -C /usr/local -xzf golang.tar.gz \
 	&& rm golang.tar.gz \
@@ -35,7 +38,7 @@ RUN set -ex \
 	&& ./make.bash \
 	\
 	&& rm -rf /usr/local/bootstrap /usr/local/go/pkg/bootstrap \
-	&& apk del $buildDeps
+	&& apk del .build-deps
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
