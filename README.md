@@ -1,5 +1,3 @@
-[![][image-layers-status]][img-layers]
-
 # Build container for the Go programming language
 
 A build container intended for running builds for the [Go][golang] programming
@@ -24,8 +22,8 @@ arrays and key-value maps), and a large standard library.
 
 ## Features
 
-This container provides a plain Go 1.5/1.6 installation built from official
-release packages.
+This container provides a plain Go installation built from official release
+packages for version 1.5, 1.6 and 1.7.
 
 Both Go containers include the following version control systems to make
 `go get` happy:
@@ -40,17 +38,19 @@ This container can be used as build image in Drone, as shown in the following
 example (using a build matrix):
 
 ```yaml
-build:
-  image: danielsreichenbach/golang:$$GO_VERSION
-  commands:
-    - go get -t -v ./...
-    - go build -v
-    - go test -v
+pipeline:
+    build:
+      image: danielsreichenbach/golang:$$GO_VERSION
+      commands:
+        - go get -t -v ./...
+        - go build -v
+        - go test -v
 
 matrix:
   GO_VERSION:
     - 1.5
     - 1.6
+    - 1.7
 ```
 
 [golang]:               https://golang.org/
@@ -60,6 +60,3 @@ matrix:
 
 [alpine]:               https://alpinelinux.org/
 [docker-gliderlabs]:    https://hub.docker.com/r/gliderlabs/alpine/
-
-[img-layers]:           https://imagelayers.io/?images=danielsreichenbach/golang:latest "Get your own badge on imagelayers.io"
-[image-layers-status]:  https://badge.imagelayers.io/danielsreichenbach/golang:latest.svg
